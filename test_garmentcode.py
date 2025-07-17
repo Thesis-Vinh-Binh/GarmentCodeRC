@@ -4,7 +4,7 @@ from pathlib import Path
 import yaml
 import sys
 
-sys.path.insert(0, '/is/cluster/fast/sbian/github/GarmentCodeV2')
+# sys.path.insert(0, '/is/cluster/fast/sbian/github/GarmentCodeV2')
 
 from assets.garment_programs.meta_garment import MetaGarment
 from assets.bodies.body_params import BodyParameters
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     body = BodyParameters(bodies_measurements[body_to_use])
 
     design_files = {
-        'shirt': './assets/design_params/t-shirt.yaml',
+        'ao_dai': './assets/design_params/ao_dai.yaml',
     }
     designs = {}
     for df in design_files:
