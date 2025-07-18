@@ -29,6 +29,7 @@ if __name__ == '__main__':
 
     design_files = {
         'ao_dai': './assets/design_params/ao_dai.yaml',
+        # 'dress': './assets/design_params/dress.yaml',
     }
     designs = {}
     for df in design_files:

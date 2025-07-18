@@ -1,0 +1,101 @@
+design_file: ./assets/design_params/ao_dai.yaml
+body_default: mean_all
+body_samples: C:/Users/nguye/Documents/Thesis/GarmentCode/5000_body_shapes_and_measures
+size: 10
+name: ao_dai_data_10
+to_subfolders: true
+generator:
+  config:
+    random_seed: 1752859594
+  stats:
+    panel_count:
+      rand_TPEY12B8IS: 18
+      rand_EN75KROBNH: 14
+      rand_8V7RUL7U3X: 18
+      rand_IE2ANZ5Q4M: 10
+      rand_KJUKE5TGCO: 18
+      rand_L5VH5SDTVN: 18
+      rand_YXBDHOYIQ8: 18
+      rand_93V5JWO20P: 10
+      rand_WQQG1LVOV2: 18
+      rand_P8FMMXL7WQ: 10
+    garment_types:
+      rand_TPEY12B8IS:
+        main: jumpsuit
+        styles:
+        - with_sleeves
+        - long_sleeve
+        - maxi
+      rand_EN75KROBNH:
+        main: jumpsuit
+        styles:
+        - with_sleeves
+        - long_sleeve
+        - maxi
+      rand_8V7RUL7U3X:
+        main: jumpsuit
+        styles:
+        - with_sleeves
+        - long_sleeve
+        - maxi
+      rand_IE2ANZ5Q4M:
+        main: jumpsuit
+        styles:
+        - sleeveless
+        - maxi
+      rand_KJUKE5TGCO:
+        main: jumpsuit
+        styles:
+        - with_sleeves
+        - long_sleeve
+        - maxi
+      rand_L5VH5SDTVN:
+        main: jumpsuit
+        styles:
+        - with_sleeves
+        - long_sleeve
+        - maxi
+      rand_YXBDHOYIQ8:
+        main: jumpsuit
+        styles:
+        - with_sleeves
+        - long_sleeve
+        - maxi
+      rand_93V5JWO20P:
+        main: jumpsuit
+        styles:
+        - sleeveless
+        - maxi
+      rand_WQQG1LVOV2:
+        main: jumpsuit
+        styles:
+        - with_sleeves
+        - long_sleeve
+        - maxi
+      rand_P8FMMXL7WQ:
+        main: jumpsuit
+        styles:
+        - sleeveless
+        - maxi
+    garment_types_summary:
+      main:
+        jumpsuit: 10
+      style:
+        with_sleeves:
+          total: 7
+          jumpsuit: 7
+        long_sleeve:
+          total: 7
+          jumpsuit: 7
+        maxi:
+          total: 10
+          jumpsuit: 10
+        sleeveless:
+          total: 3
+          jumpsuit: 3
+    generation_time: 81.879 s
+    panel_count_avg: 15.2
+    panel_count_med: 18.0
+    panel_count_min: 10
+    panel_count_max: 18
+data_folder: ao_dai_data_10

@@ -310,11 +310,12 @@ if __name__ == '__main__':
     else:  # New sample
         props = Properties()
         props.set_basic(
-            design_file='./assets/design_params/default.yaml',
+            design_file='./assets/design_params/ao_dai.yaml',
             body_default='mean_all',
-            body_samples='/is/cluster/fast/sbian/data/673889', 
+            body_samples='C:/Users/nguye/Documents/Thesis/GarmentCode/5000_body_shapes_and_measures',
             size=args.size,
-            name=f'{args.name}_{args.size}' if not args.batch_id else f'{args.name}_{args.size}_{args.batch_id}',
+            # name=f'{args.name}_{args.size}' if not args.batch_id else f'{args.name}_{args.size}_{args.batch_id}',
+            name='test',
             to_subfolders=True)
         props.set_section_config('generator')
         props.set_section_stats(

@@ -9,7 +9,7 @@ class AoDaiFlap(StackableSkirtComponent):
     def __init__(self, body, design, tag='', length=None, rise=None, slit=True, top_ruffles=True, min_len=5) -> None:
         super().__init__(body, design, tag)
 
-        design = design['skirt']
+        design = design['flap']
 
         self.rise = design['rise']['v'] if rise is None else rise
         waist, hip_line, back_waist = self.eval_rise(self.rise)
@@ -23,23 +23,23 @@ class AoDaiFlap(StackableSkirtComponent):
         length = max(length, min_len)
 
         self.front = SkirtPanel(
-            f'skirt_front_{tag}' if tag else 'skirt_front', 
+            f'flap_front', 
             waist_length=waist - back_waist, 
             length=length,
             ruffles=design['ruffle']['v'] if top_ruffles else 1,   # Only if on waistband
             flare=design['flare']['v'],
             bottom_cut=design['bottom_cut']['v'] * design['length']['v'] if slit else 0,
             match_top_int_to=(body['waist'] - body['waist_back_width'])
-        ).translate_to([0, body['_waist_level'], 25])
+        ).translate_to([0, body['_waist_level'], 28])  # 25 + 3 = 28 (3 units farther than pants front)
         self.back = SkirtPanel(
-            f'skirt_back_{tag}'  if tag else 'skirt_back', 
-            waist_length=back_waist, 
+            f'flap_back', 
+            waist_length=waist - back_waist, 
             length=length,
             ruffles=design['ruffle']['v'] if top_ruffles else 1,   # Only if on waistband
             flare=design['flare']['v'],
             bottom_cut=design['bottom_cut']['v'] * design['length']['v'] if slit else 0,
-            match_top_int_to=body['waist_back_width']
-        ).translate_to([0, body['_waist_level'], -20])
+            match_top_int_to=(body['waist'] - body['waist_back_width'])
+        ).translate_to([0, body['_waist_level'], -17])  # -20 + 3 = -17 (3 units farther than pants back)
 
         self.stitching_rules = pyg.Stitches(
         )

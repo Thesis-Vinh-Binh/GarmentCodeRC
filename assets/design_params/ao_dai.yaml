@@ -1,51 +1,20 @@
 design:
   meta:
     upper:
-      v: Shirt
+      v: AoDai
       range:
-      - FittedShirt
-      - Shirt
-      - null
-      type: select_null
-      default_prob: 0.3
+      - AoDai
+      type: select
     wb:
       v: null
       range:
-      - StraightWB
-      - FittedWB
       - null
       type: select_null
-      default_prob: 0.5
     bottom:
-      v: AoDaiFlap
+      v: Pants
       range:
-      - SkirtCircle
-      - AsymmSkirtCircle
-      - GodetSkirt
       - Pants
-      - Skirt2
-      - SkirtManyPanels
-      - PencilSkirt
-      - SkirtLevels
-      - AoDaiFlap
-      - null
-      type: select_null
-      default_prob: 0.3
-  waistband:
-    waist:
-      v: 1.0
-      range:
-      - 1.0
-      - 2
-      type: float
-      default_prob: 0.7
-    width:
-      v: 0.2
-      range:
-      - 0.1
-      - 1.
-      type: float
-      default_prob: 0.5
+      type: select
   shirt:
     strapless:
       v: false
@@ -55,29 +24,29 @@ design:
       type: bool
       default_prob: 0.8
     length:
-      v: 1.2
+      v: 0.97
       range:
-      - 0.5   
-      - 3.5
+      - 0.9
+      - 1.0
       type: float
       default_prob: 0.7
     width:
-      v: 1.0
+      v: 1.2
       range:
       - 1.0
-      - 1.3
+      - 1.2
       type: float
       default_prob: 0.4
     flare: 
-      v: 0.7
+      v: 1.0
       range: 
       - 0.7
-      - 1.6
+      - 1.0
       type: float
       default_prob: 0.4
   collar:
     f_collar:
-      v: VNeckHalf
+      v: CircleArcNeckHalf
       range:
       - CircleNeckHalf
       - CurvyNeckHalf
@@ -92,14 +61,7 @@ design:
       v: CircleNeckHalf
       range:
       - CircleNeckHalf
-      - CurvyNeckHalf
-      - VNeckHalf
-      - SquareNeckHalf
-      - TrapezoidNeckHalf
-      - CircleArcNeckHalf
-      - Bezier2NeckHalf
       type: select
-      default_prob: 0.8
     width:
       v: -0.1
       range:
@@ -108,17 +70,17 @@ design:
       type: float
       default_prob: 0.4
     fc_depth:
-      v: 0.3
+      v: 0.1
       range:
-      - 0.3
-      - 2    
+      - 0.05
+      - 0.1
       type: float
       default_prob: 0.3
     bc_depth:
       v: 0
       range:
       - 0
-      - 2
+      - 0.05
       type: float
       default_prob: 0.4
     fc_angle:
@@ -177,20 +139,17 @@ design:
       default_prob: 0.8
     component:
       style:
-        v: Mandarin
+        v: null
         range:
-        - Turtle
-        - SimpleLapel
-        - Hood2Panels
         - Mandarin
         - null
         type: select_null
         default_prob: 0.6
       depth:
-        v: 7
+        v: 3
         range:
         - 2
-        - 8
+        - 4
         type: int
       lapel_standing:
         v: false
@@ -223,35 +182,33 @@ design:
     armhole_shape:
       v: ArmholeCurve
       range:
-      - ArmholeSquare
-      - ArmholeAngle
       - ArmholeCurve
+      - null
       type: select
-      default_prob: 0.7
     length:
       v: 1
       range:
-      - 0.1
-      - 1.15
+      - 0.6
+      - 1.0
       type: float
     connecting_width:
-      v: 0.2 
+      v: 0.1
       range:
       - 0
-      - 2
+      - 0.3
       type: float
       default_prob: 0.6
     end_width:
-      v: 0.2
+      v: 0.5
       range:
-      - 0.2
-      - 2
+      - 0.1
+      - 0.5
       type: float
       default_prob: 0.4
     sleeve_angle:
-      v: 10
+      v: 30
       range:
-      - 10
+      - 30
       - 50
       type: int
     opening_dir_mix:  
@@ -293,21 +250,20 @@ design:
         v: null
         range:
         - CuffBand
-        - CuffSkirt
-        - CuffBandSkirt
         - null
         type: select_null
+        default_prob: 0.8
       top_ruffle:
-        v: 1
+        v: 1.0
         range:
-        - 1
-        - 3
+        - 1.0
+        - 1.1
         type: float
       cuff_len:
         v: 0.1
         range:
         - 0.05
-        - 0.9
+        - 0.14
         type: float
         default_prob: 0.7
       skirt_fraction:
@@ -330,24 +286,14 @@ design:
         - 1.5
         type: float
         default_prob: 0.3
-  left:
-    enable_asym:
-      v: false
-      range:
-      - true
-      - false
-      type: bool
-      default_prob: 0.8
     shirt:
       strapless:
         v: false
         range:
-        - true
         - false
         type: bool
-        default_prob: 0.8
       width:
-        v: 1.0
+        v: 1.3
         range:
         - 1.0
         - 1.3
@@ -377,14 +323,7 @@ design:
         v: CircleNeckHalf
         range:
         - CircleNeckHalf
-        - CurvyNeckHalf
-        - VNeckHalf
-        - SquareNeckHalf
-        - TrapezoidNeckHalf
-        - CircleArcNeckHalf
-        - Bezier2NeckHalf
         type: select
-        default_prob: 0.8
       width:
         v: 0.5
         range:
@@ -464,7 +403,7 @@ design:
         v: 0.3
         range:
         - 0.1
-        - 1.15
+        - 0.5
         type: float
       connecting_width:
         v: 0.2
@@ -481,13 +420,13 @@ design:
         type: float
         default_prob: 0.4
       sleeve_angle:
-        v: 10
+        v: 50
         range:
         - 10
         - 50
         type: int
       opening_dir_mix:  
-        v: 0.2 
+        v: 0.2
         range: 
         - -0.9
         - 0.8
@@ -529,6 +468,7 @@ design:
           - CuffBandSkirt
           - null
           type: select_null
+          default_prob: 0.8
         top_ruffle:
           v: 1
           range:
@@ -562,17 +502,17 @@ design:
           - 1.5
           type: float
           default_prob: 0.3
-  skirt:
+  flap:
     length:
-      v: 1.0
+      v: 0.5
       range:
       - 0.5
-      - 1.0
+      - 0.8
       type: float
     rise:
       v: 1
       range:
-      - 0.5
+      - 0.9
       - 1
       type: float
       default_prob: 0.3
@@ -580,7 +520,7 @@ design:
       v: 1.3
       range:
       - 1
-      - 2
+      - 1.3
       type: float
       default_prob: 0.3
     bottom_cut: 
@@ -594,220 +534,31 @@ design:
       v: 0
       range:
       - 0
-      - 20
+      - 3
       type: int
       default_prob: 0.5
-  flare-skirt:
-    length:
-      v: 0.2
-      range:
-      - -0.2
-      - 0.95
-      type: float
-    rise:
-      v: 1
-      range:
-      - 0.5
-      - 1
-      type: float
-      default_prob: 0.3
-    suns:
-      v: 0.75
-      range:
-      - 0.1
-      - 1.95
-      type: float
-    skirt-many-panels:
-      n_panels:
-        v: 4
-        range:
-        - 4
-        - 15
-        type: int
-      panel_curve:
-        v: 0
-        range:
-        - -0.35
-        - -0.25
-        - -0.15
-        - 0
-        - 0.15
-        - 0.25
-        - 0.35
-        - 0.45
-        type: select
-    asymm:
-      front_length:
-        v: 0.5
-        range:
-        - 0.1
-        - 0.9
-        type: float
-        default_prob: 0.5
-    cut:
-      add:
-        v: false
-        range:
-        - true
-        - false
-        type: bool
-        default_prob: 0.6
-      depth:
-        v: 0.5
-        range:
-        - 0.05
-        - 0.95
-        type: float
-        default_prob: 0.6
-      width:
-        v: 0.1
-        range:
-        - 0.05
-        - 0.4
-        type: float
-      place:
-        v: -0.5
-        range:
-        - -1
-        - 1
-        type: float
-  godet-skirt:
     base:
       v: PencilSkirt
       range:
       - Skirt2
       - PencilSkirt
-      type: select
-      default_prob: 0.7
-    insert_w:
-      v: 15
-      range:
-      - 10
-      - 50
-      type: int
-    insert_depth:
-      v: 20
-      range:
-      - 10
-      - 50
-      type: int
-    num_inserts:
-      v: 4
-      range:
-      - 4
-      - 6
-      - 8
-      - 10
-      - 12
-      type: select
-    cuts_distance:
-      v: 5
-      range:
-      - 0
-      - 10
-      type: int
-  pencil-skirt:
-    length:
-      v: 0.4
-      range:
-      - 0.2
-      - 0.95
-      type: float
-    rise:
-      v: 1
-      range:
-      - 0.5
-      - 1
-      type: float
-      default_prob: 0.3
-    flare:
-      v: 1.
-      range:
-      - 0.6
-      - 1.5
-      type: float
-      default_prob: 0.3
-    low_angle:
-      v: 0
-      range:
-      - -30
-      - 30
-      type: int
-      default_prob: 0.7
-    front_slit:
-      v: 0
-      range:
-      - 0
-      - 0.9
-      type: float
-      default_prob: 0.4
-    back_slit:
-      v: 0
-      range:
-      - 0
-      - 0.9
-      type: float
-      default_prob: 0.4
-    left_slit:
-      v: 0
-      range:
-      - 0
-      - 0.9
-      type: float
-      default_prob: 0.6
-    right_slit: 
-      v: 0
-      range:
-      - 0
-      - 0.9
-      type: float
-      default_prob: 0.6
-    style_side_cut:
-      v: null
-      range: 
-      - Sun
-      - SIGGRAPH_logo
-      type: select_null
-      default_prob: 1.
-  levels-skirt:  
-    base:
-      v: PencilSkirt
-      range:
-      - Skirt2
-      - PencilSkirt
-      - SkirtCircle
-      - AsymmSkirtCircle
       type: select
     level:
       v: Skirt2
       range:
       - Skirt2
-      - SkirtCircle
-      - AsymmSkirtCircle
       type: select
     num_levels:
       v: 1
       range:
       - 1
-      - 5
+      - 2
       type: int
     level_ruffle:
       v: 1.0
       range:
       - 1
       - 1.7
-      type: float
-    length:
-      v: 0.5
-      range:
-      - 0.2
-      - 0.95
-      type: float
-    rise:
-      v: 1
-      range:
-      - 0.5
-      - 1
       type: float
       default_prob: 0.3
     base_length_frac: 
@@ -816,44 +567,46 @@ design:
       - 0.2
       - 0.8
       type: float
+  left:
+    enable_asym:
+      v: false
+      range:
+      - false
+      type: bool
   pants:
     length:
-      v: 0.3
+      v: 0.8
       range:
-      - 0.2
+      - 0.7
       - 0.9
       type: float
     width:
-      v: 1.0
+      v: 0.1
       range:
-      - 1.0
-      - 1.5
+      - 0.1
+      - 0.5
       type: float
       default_prob: 0.5
     flare:
       v: 1.0
       range:
-      - 0.5
-      - 1.2
+      - 1.0
+      - 1.1
       type: float
       default_prob: 0.3
     rise:
       v: 1.0
       range:
-      - 0.5
-      - 1
+      - 0.99
+      - 1.0
       type: float
       default_prob: 0.3
     cuff:
       type:
         v: null
         range:
-        - CuffBand
-        - CuffSkirt
-        - CuffBandSkirt
         - null
         type: select_null
-        default_prob: 0.5
       top_ruffle:
         v: 1.0
         range:

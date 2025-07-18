@@ -114,18 +114,22 @@ class DesignSampler:
         # Check Defaults
         try: 
             def_prob = nested_get(random_params, path + ['default_prob'])
-        except KeyError as e:   # Default probability not given  -> Sample uniformly
+        except KeyError as e:   # Default probability not given  -> Use default value
             def_prob = None
 
         def_value = nested_get(self.params, path + ['v'])
-        if self.__use_default(def_prob):
+        
+        # If no default_prob is specified, always use the default value
+        if def_prob is None:
+            new_val = def_value
+        elif self.__use_default(def_prob):
             new_val = def_value
         else:
             if 'select' in p_type or p_type == 'bool' or 'file' in p_type:  # All discrete types
                 if p_type == 'select_null' and None not in range:
                     range.append(None)
-                # Exclude default
-                if def_prob is not None:
+                # Exclude default only if we're actually randomizing
+                if def_prob is not None and def_prob > 0:
                     range.remove(def_value) 
                 new_val = random.choice(range)
             elif p_type == 'int':
