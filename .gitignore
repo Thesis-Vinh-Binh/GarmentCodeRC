@@ -32,3 +32,7 @@ output*
 try_imgs/
 try_imgs2/
 summaryfolder/
+ao_dai_data_100/
+data/close_image_*
+runs/
+data/
