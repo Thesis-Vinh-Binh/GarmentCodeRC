@@ -6,20 +6,21 @@ from pathlib import Path
 import shutil
 
 # from llava.garment_utils_v2 import run_simultion_warp
-sys.path.append('/is/cluster/fast/sbian/github/GarmentCodeV2/')
 from assets.garment_programs.meta_garment import MetaGarment
 from assets.bodies.body_params import BodyParameters
 
-def run_simultion_warp(pattern_spec, sim_config, output_path):
-    from pygarment.meshgen.boxmeshgen import BoxMesh
-    from pygarment.meshgen.simulation import run_sim
-    import pygarment.data_config as data_config
-    from pygarment.meshgen.sim_config import PathCofig
-    
-    props = data_config.Properties(sim_config) 
-    props.set_section_stats('sim', fails={}, sim_time={}, spf={}, fin_frame={}, body_collisions={}, self_collisions={})
-    props.set_section_stats('render', render_time={})
+from pygarment.meshgen.boxmeshgen import BoxMesh
+from pygarment.meshgen.simulation import run_sim
+import pygarment.data_config as data_config
+from pygarment.meshgen.sim_config import PathCofig
 
+def get_command_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--json_list", '-j', type=str, required=True, help="path to the save resules shapenet dataset")
+    args = parser.parse_args()
+    return args
+
+def run_simultion_warp(pattern_spec, props, output_path):
     spec_path = Path(pattern_spec)
     garment_name, _, _ = spec_path.stem.rpartition('_')  # assuming ending in '_specification'
 
@@ -30,12 +31,8 @@ def run_simultion_warp(pattern_spec, sim_config, output_path):
         body_name='mean_all',    # 'f_smpl_average_A40'
         smpl_body=False,   # NOTE: depends on chosen body model
         add_timestamp=False,
-        system_path='/is/cluster/fast/sbian/github/GarmentCodeV2/system.json'
+        system_path='./system.json'
     )
-
-    # Generate and save garment box mesh (if not existent)
-    print(f"Generate box mesh of {garment_name} with resolution {props['sim']['config']['resolution_scale']}...")
-    print('\nGarment load: ', paths.in_g_spec)
 
     garment_box_mesh = BoxMesh(paths.in_g_spec, props['sim']['config']['resolution_scale'])
     garment_box_mesh.load()
@@ -56,41 +53,41 @@ def run_simultion_warp(pattern_spec, sim_config, output_path):
     
     props.serialize(paths.element_sim_props)
 
+if __name__ == "__main__":  
+    args = get_command_args()
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--garment_json_path", type=str, default='', help="path to the save resules shapenet dataset")
-parser.add_argument("--garment_parent_path", type=str, default='', help="path to the save resules shapenet dataset")
-parser.add_argument("--json_spec_file", type=str, default='', help="path to the save resules shapenet dataset")
+    props = data_config.Properties('assets/Sim_props/default_sim_props.yaml') 
+    props.set_section_stats('sim', fails={}, sim_time={}, spf={}, fin_frame={}, body_collisions={}, self_collisions={})
+    props.set_section_stats('render', render_time={})
 
-args = parser.parse_args()
-
-if len(args.garment_json_path) == 0 and len(args.garment_parent_path) > 1:
-    args.garment_json_path = os.path.join(args.garment_parent_path, 'vis_new/all_json_spec_files.json')
-
-    with open(args.garment_json_path) as f:
+    with open(args.json_list) as f:
         garment_json = json.load(f)
 
-elif len(args.json_spec_file) > 0:
-    garment_json = [args.json_spec_file]
+    print("total files: ", len(garment_json))
+    processed_files = []
+    # assert False
 
-else:
-    with open(args.garment_json_path) as f:
-        garment_json = json.load(f)
-
-print(len(garment_json))
-# assert False
-
-for json_spec_file in garment_json:
-    print(json_spec_file)
-    json_spec_file = json_spec_file.replace('validate_garment', 'valid_garment')
-    saved_folder = os.path.dirname(json_spec_file)
-    try:
-        run_simultion_warp(
-                json_spec_file,
-                'assets/Sim_props/default_sim_props.yaml',
-                saved_folder
-            )
-    except Exception as e:
-        print(e)
-        print('Error in running simulation for ', json_spec_file)
-        continue
+    for json_spec_file in garment_json:
+        json_spec_file = json_spec_file.replace('validate_garment', 'valid_garment')
+        saved_folder = os.path.dirname(json_spec_file) 
+        if os.path.exists(os.path.join(saved_folder, os.path.basename(saved_folder))):
+            print(f'Skip ', json_spec_file)
+            processed_files.append(json_spec_file)
+            continue
+        print(f'Handle ', json_spec_file)
+        try:
+            run_simultion_warp(
+                    json_spec_file,
+                    props,
+                    saved_folder
+                )
+        except Exception as e:
+            print(e)
+            print('Error in running simulation for ', json_spec_file)
+            continue
+        processed_files.append(json_spec_file)
+    
+    from datetime import datetime
+    os.makedirs('processed_files', exist_ok=True)
+    with open(f'processed_files/processed_files_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json', 'w') as f:
+        json.dump(processed_files, f)
