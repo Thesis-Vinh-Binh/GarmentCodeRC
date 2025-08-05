@@ -70,10 +70,10 @@ if __name__ == "__main__":
     for json_spec_file in garment_json:
         json_spec_file = json_spec_file.replace('validate_garment', 'valid_garment')
         saved_folder = os.path.dirname(json_spec_file) 
-        if os.path.exists(os.path.join(saved_folder, os.path.basename(saved_folder))):
-            print(f'Skip ', json_spec_file)
-            processed_files.append(json_spec_file)
-            continue
+        # if os.path.exists(os.path.join(saved_folder, os.path.basename(saved_folder))):
+        #     print(f'Skip ', json_spec_file)
+        #     processed_files.append(json_spec_file)
+        #     continue
         print(f'Handle ', json_spec_file)
         try:
             run_simultion_warp(
@@ -82,7 +82,6 @@ if __name__ == "__main__":
                     saved_folder
                 )
         except Exception as e:
-            print(e)
             print('Error in running simulation for ', json_spec_file)
             continue
         processed_files.append(json_spec_file)
