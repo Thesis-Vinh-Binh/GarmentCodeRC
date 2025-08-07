@@ -23,6 +23,8 @@ system.json
 # place to store render scenes
 **/data_generation/Scenes
 
+
+
 # file for small script tries
 tmp*
 *tmp*.mb
@@ -36,3 +38,4 @@ ao_dai_data_100/
 data/close_image_*
 runs/
 data/
+processed_files/*

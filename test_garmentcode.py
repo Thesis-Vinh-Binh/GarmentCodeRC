@@ -28,8 +28,7 @@ if __name__ == '__main__':
     body = BodyParameters(bodies_measurements[body_to_use])
 
     design_files = {
-        'ao_dai': './assets/design_params/ao_dai.yaml',
-        # 'dress': './assets/design_params/dress.yaml',
+        'test': './runs/d2g_close/10001_1923/10001_1923.yaml',
     }
     designs = {}
     for df in design_files:
