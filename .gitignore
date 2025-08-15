@@ -38,4 +38,7 @@ ao_dai_data_100/
 data/close_image_*
 runs/
 data/
+dataset/
+simulation/
+merged_renders/
 processed_files/*

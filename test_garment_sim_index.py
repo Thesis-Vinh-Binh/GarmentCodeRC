@@ -39,7 +39,8 @@ def run_simultion_warp(pattern_spec, props, output_path):
     garment_box_mesh.serialize(
         paths, store_panels=False, uv_config=props['render']['config']['uv_texture'])
 
-    props.serialize(paths.element_sim_props)
+    # Only serialize props once after simulation to save time
+    # props.serialize(paths.element_sim_props)  # REMOVED: unnecessary before simulation
 
     run_sim(
         garment_box_mesh.name, 
@@ -51,42 +52,56 @@ def run_simultion_warp(pattern_spec, props, output_path):
         verbose=False
     )
     
-    props.serialize(paths.element_sim_props)
+    # Serialize props only once after simulation
+    # props.serialize(paths.element_sim_props)
 
 if __name__ == "__main__":  
     args = get_command_args()
 
+    # Load props once at startup
     props = data_config.Properties('assets/Sim_props/default_sim_props.yaml') 
     props.set_section_stats('sim', fails={}, sim_time={}, spf={}, fin_frame={}, body_collisions={}, self_collisions={})
     props.set_section_stats('render', render_time={})
 
+    # Load JSON list once
     with open(args.json_list) as f:
         garment_json = json.load(f)
 
     print("total files: ", len(garment_json))
     processed_files = []
-    # assert False
+    
+    # Pre-create output directory once
+    os.makedirs('processed_files', exist_ok=True)
 
     for json_spec_file in garment_json:
         json_spec_file = json_spec_file.replace('validate_garment', 'valid_garment')
         saved_folder = os.path.dirname(json_spec_file) 
-        # if os.path.exists(os.path.join(saved_folder, os.path.basename(saved_folder))):
-        #     print(f'Skip ', json_spec_file)
-        #     processed_files.append(json_spec_file)
-        #     continue
-        print(f'Handle ', json_spec_file)
+        
+        # Optimized existence check - combine path operations
+        basename = os.path.basename(saved_folder)
+        sim_file_path = os.path.join(saved_folder, basename, f'{basename}_render_back.png')
+        
+        if os.path.exists(sim_file_path):
+            print(f'Skip {json_spec_file}')
+            processed_files.append(json_spec_file)
+            continue
+            
+        print(f'Handle {json_spec_file}')
         try:
             run_simultion_warp(
                     json_spec_file,
                     props,
                     saved_folder
                 )
+            processed_files.append(json_spec_file)
         except Exception as e:
-            print('Error in running simulation for ', json_spec_file)
+            print(f'Error in running simulation for {json_spec_file}: {e}')
             continue
-        processed_files.append(json_spec_file)
     
+    # Save results once at the end
     from datetime import datetime
-    os.makedirs('processed_files', exist_ok=True)
-    with open(f'processed_files/processed_files_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json', 'w') as f:
+    output_file = f'processed_files/processed_files_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
+    with open(output_file, 'w') as f:
         json.dump(processed_files, f)
+    
+    print(f"Results saved to: {output_file}")
