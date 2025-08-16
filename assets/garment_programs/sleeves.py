@@ -112,7 +112,7 @@ class SleevePanel(pyg.Panel):
                 Can be used to adjust length evaluation to fit the cuff
         """
         super().__init__(name)
-        MIN_LENGTH = 5    # Minimum sleeve length
+        MIN_LENGTH = 1   # Minimum sleeve length
 
         shoulder_angle = np.deg2rad(body['_shoulder_incl'])
         rest_angle = max(np.deg2rad(design['sleeve_angle']['v']),

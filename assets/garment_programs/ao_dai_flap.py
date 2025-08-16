@@ -1,0 +1,66 @@
+import numpy as np
+import pygarment as pyg
+
+from assets.garment_programs.base_classes import StackableSkirtComponent
+from assets.garment_programs.skirt_paneled import SkirtPanel
+
+class AoDaiFlap(StackableSkirtComponent):
+    """Simple 2 panel ao dai flap"""
+    def __init__(self, body, design, top_width=None, top_length=None, tag='', length=None, rise=None, slit=True, top_ruffles=True, min_len=5) -> None:
+        super().__init__(body, design, tag)
+
+        design = design['flap']
+
+        self.rise = design['rise']['v'] if rise is None else rise
+        waist, hip_line, back_waist = self.eval_rise(self.rise)
+        
+        if top_length is None:
+            top_length = body['_waist_level']
+
+        # Force from arguments if given
+        if length is None:
+            length = hip_line + design['length']['v'] * body['_leg_length']  # Depends on leg length
+
+        # NOTE: with some combinations of rise and length parameters length may become too small/negative
+        # Hence putting a min positive value here
+        length = max(length, min_len)
+        target_top = top_width if top_width is not None else body['waist'] - body['waist_back_width']
+
+        self.front = SkirtPanel(
+            f'flap_front', 
+            waist_length=target_top, 
+            length=length,
+            ruffles=design['ruffle']['v'] if top_ruffles else 1,   # Only if on waistband
+            flare=design['flare']['v'],
+            bottom_cut=design['bottom_cut']['v'] * design['length']['v'] if slit else 0,
+            match_top_int_to=target_top
+        ).translate_to([0, top_length, 28])  # 25 + 3 = 28 (3 units farther than pants front)
+        self.back = SkirtPanel(
+            f'flap_back', 
+            waist_length=target_top, 
+            length=length,
+            ruffles=design['ruffle']['v'] if top_ruffles else 1,   # Only if on waistband
+            flare=design['flare']['v'],
+            bottom_cut=design['bottom_cut']['v'] * design['length']['v'] if slit else 0,
+            match_top_int_to=target_top
+        ).translate_to([0, top_length, -17])  # -20 + 3 = -17 (3 units farther than pants back)
+
+        self.stitching_rules = pyg.Stitches(
+        )
+
+        # Reusing interfaces of sub-panels as interfaces of this component
+        self.interfaces = {
+            'top_f': self.front.interfaces['top'],
+            'top_b': self.back.interfaces['top'],
+            'top': pyg.Interface.from_multiple(
+                self.front.interfaces['top'], self.back.interfaces['top']
+            ),
+            'bottom_f': self.front.interfaces['bottom'],
+            'bottom_b': self.back.interfaces['bottom'],
+            'bottom': pyg.Interface.from_multiple(
+                self.front.interfaces['bottom'], self.back.interfaces['bottom']
+            )
+        }
+
+    def length(self):
+        return self.front.length()

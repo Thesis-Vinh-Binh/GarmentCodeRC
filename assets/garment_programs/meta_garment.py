@@ -7,6 +7,8 @@ from assets.garment_programs.skirt_paneled import *
 from assets.garment_programs.skirt_levels import *
 from assets.garment_programs.circle_skirt import *
 from assets.garment_programs.sleeves import *
+from assets.garment_programs.ao_dai_flap import *
+from assets.garment_programs.ao_dai import *
 
 class TotalLengthError(BaseException):
     """Error indicating that the total length of a garment goes beyond 
@@ -36,7 +38,11 @@ class MetaGarment(pyg.Component):
         # Upper garment
         if self.upper_name: 
             upper = globals()[self.upper_name]
-            self.subs = [upper(body, design)]
+            shirt_fitted = design['shirt'].get('fitted', None)
+            if shirt_fitted is None:
+                self.subs = [upper(body, design)]
+            else:
+                self.subs = [upper(body, design, fitted=shirt_fitted['v'])]
 
             # Set a label
             self.subs[-1].set_panel_label('body', overwrite=False)
@@ -80,7 +86,7 @@ class MetaGarment(pyg.Component):
         if self.lower_name:
             self.subs.append(Lower)
             # Place below the upper garment or self.wb
-            if len(self.subs) > 1:
+            if len(self.subs) > 1 and self.upper_name != 'AoDai':
                 self.subs[-1].place_by_interface(
                     self.subs[-1].interfaces['top'],
                     self.subs[-2].interfaces['bottom'], 

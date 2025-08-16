@@ -45,18 +45,22 @@ class TorsoFrontHalfPanel(BaseBodicePanel):
             [0, length + shoulder_incl], 
             loop=True
         )
+        
+        back_waist_half = (body['waist'] - body['waist_back_width']) / 2
 
         # Interfaces
         self.interfaces = {
             'outside':  pyg.Interface(self, self.edges[1]),   
             'inside': pyg.Interface(self, self.edges[-1]),
             'shoulder': pyg.Interface(self, self.edges[-2]),
-            'bottom': pyg.Interface(self, self.edges[0], ruffle=self.width / ((body['waist'] - body['waist_back_width']) / 2)),
+            'bottom': pyg.Interface(self, self.edges[0], ruffle=self.width / back_waist_half),
             
             # Reference to the corner for sleeve and collar projections
             'shoulder_corner': pyg.Interface(self, [self.edges[-3], self.edges[-2]]),
             'collar_corner': pyg.Interface(self, [self.edges[-2], self.edges[-1]])
         }
+        
+        self.half_bottom_width = back_waist_half
 
         # default placement
         self.translate_by([0, body['height'] - body['head_l'] - length - shoulder_incl, 0])
