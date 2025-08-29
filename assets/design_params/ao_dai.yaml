@@ -142,7 +142,7 @@ design:
       default_prob: 0.8
     component:
       style:
-        v: Mandarin
+        v: error
         range:
         - Mandarin
         - null
@@ -152,7 +152,7 @@ design:
         v: 5
         type: int
       lapel_standing:
-        v: false
+        v: true
         range:
         - true
         - false

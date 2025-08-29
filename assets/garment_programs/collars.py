@@ -175,6 +175,59 @@ class Turtle(pyg.Component):
     def length(self):
         return self.interfaces['back'].edges.length()
 
+class Mandarin(pyg.Component):
+
+    def __init__(self, tag, body, design) -> None:
+        super().__init__(f'Turtle_{tag}')
+
+        depth = design['collar']['component']['depth']['v']
+        standing = design['collar']['component']['lapel_standing']['v']
+
+        # --Projecting shapes--
+        # Any front one!
+        f_collar = CircleNeckHalf(
+            design['collar']['bc_depth']['v'],
+            design['collar']['width']['v'])
+        
+        b_collar = CircleNeckHalf(
+            design['collar']['bc_depth']['v'],
+            design['collar']['width']['v'])
+        
+        self.interfaces = {
+            'front_proj': pyg.Interface(self, f_collar),
+            'back_proj': pyg.Interface(self, b_collar)
+        }
+
+        # -- Panels --
+        length_f, length_b = f_collar.length(), b_collar.length()
+        height_p = body['height'] - body['head_l'] + depth * 2
+        
+        self.front = SimpleLapelPanel(
+            f'{tag}_collar_front', length_f, depth).translate_by(
+            [-depth * 2, height_p, 35])  # TODOLOW This should be related with the bodice panels' placement
+
+        self.back = StraightBandPanel(
+            f'{tag}_collar_back', length_b, depth).translate_by(
+            [-length_b / 2, height_p, -10])
+            
+        self.back.interfaces['right'].set_right_wrong(True)
+
+        self.stitching_rules.append((
+            self.front.interfaces['to_collar'], 
+            self.back.interfaces['right']
+        ))
+
+        self.interfaces.update({
+            #'front': NOTE: no front interface here
+            'back': self.back.interfaces['left'],
+            'bottom': pyg.Interface.from_multiple(
+                self.front.interfaces['to_bodice'].set_right_wrong(True),
+                self.back.interfaces['bottom']
+            )
+        })
+
+    def length(self):
+        return self.interfaces['back'].edges.length()
 
 class SimpleLapelPanel(pyg.Panel):
     """A panel for the front part of simple Lapel"""

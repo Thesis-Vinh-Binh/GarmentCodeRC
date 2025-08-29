@@ -6,19 +6,14 @@ from assets.garment_programs.bodice import BodiceHalf
 class AoDai(pyg.Component):
     """Ao Dai"""
 
-    def __init__(self, body, design, fitted=False) -> None:
+    def __init__(self, body, design, fitted=True) -> None:
         name_with_params = f"{self.__class__.__name__}"
         super().__init__(name_with_params)
 
         design = self.eval_dep_params(design)
 
         self.right = BodiceHalf(f'right', body, design, fitted=fitted)
-        self.left = BodiceHalf(
-            f'left', body, 
-            design['left'] if design['left']['enable_asym']['v'] else design, 
-            fitted=fitted).mirror()
-        
-        self.flap = AoDaiFlap(body, design)
+        self.left = BodiceHalf(f'left', body, design, fitted=fitted).mirror()
         
         # Adjust interface ordering for correct connectivity
         self.interfaces = {   # Bottom connection
@@ -28,6 +23,13 @@ class AoDai(pyg.Component):
                 self.left.interfaces['b_bottom'].reverse(),
                 self.right.interfaces['b_bottom'],)
         }
+        
+        if fitted:
+            shirt_bottom_width = self.right.ftorso.get_width(0) + self.left.ftorso.get_width(0)
+        else:
+            shirt_bottom_width = self.right.half_bottom_width + self.left.half_bottom_width
+
+        self.flap = AoDaiFlap(body, design, top_width=shirt_bottom_width, top_length=body['_waist_level'] - self.right.ftorso.get_width(0) / 2)
         
 
         self.stitching_rules = pyg.Stitches(
